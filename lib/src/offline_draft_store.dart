@@ -14,7 +14,7 @@ class OfflineDraftStore {
           .substring(0, (preferences.getString(key(userId: userId, sessionId: sessionId, mode: mode)) ?? '').length.clamp(0, maxCharacters));
 
   Future<bool> write(String value, {required String userId, String sessionId = 'new', String mode = 'general'}) {
-    final bounded = value.characters.take(maxCharacters).toString();
+    final bounded = String.fromCharCodes(value.runes.take(maxCharacters));
     final draftKey = key(userId: userId, sessionId: sessionId, mode: mode);
     if (bounded.trim().isEmpty) return preferences.remove(draftKey);
     return preferences.setString(draftKey, bounded);
